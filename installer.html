@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Firefly Firmware Web Installer</title>
+    <meta name="description" content="Install Firefly Firmware directly from your browser">
+    <meta name="viewport" content="width=device-width">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; text-align: center; }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        esp-web-install-button {
+            margin: 20px 0;
+            display: block;
+        }
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓ ";
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js?module"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Firefly Firmware Installer</h1>
+        
+        <p>Install the latest Firefly firmware directly to your ESP32/ESP8266 device using your web browser!</p>
+        
+        <div class="warning">
+            <strong>⚠️ Requirements:</strong>
+            <ul>
+                <li>Chrome, Edge, or Opera browser</li>
+                <li>USB cable connected to your ESP device</li>
+                <li>Device in programming mode (if required)</li>
+            </ul>
+        </div>
+
+        <h3>Features:</h3>
+        <ul class="feature-list">
+            <li>Web-based control panels</li>
+            <li>MQTT integration</li>
+            <li>Multiple hardware support</li>
+            <li>OTA updates</li>
+            <li>Data logging</li>
+            <li>Custom scripting engine</li>
+        </ul>
+
+        <esp-web-install-button 
+            manifest="./manifest.json"
+            install-supported
+            install-unsupported
+        >
+            <button slot="install" class="install-button">
+                Install Firefly Firmware
+            </button>
+            <button slot="unsupported">
+                Your browser doesn't support Web Serial
+            </button>
+            <button slot="not-allowed">
+                Install not allowed
+            </button>
+        </esp-web-install-button>
+
+        <p><small>This installer uses ESP Web Tools by Espressif Systems</small></p>
+    </div>
+</body>
+</html>
