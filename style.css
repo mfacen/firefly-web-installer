@@ -53,7 +53,7 @@ h1 {
 }
 h4,h1 {
   font-size: 1.5em;
-  color: var(--card-title-color);
+  color: var(--card-title-color) !important;
   background-color: var(--card-title-bg-color) !important;
   margin: 4px;
   padding: 4px;
