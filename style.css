@@ -15,8 +15,8 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background: var(--main-bg-color);
-  color: var(--main-text-color);
+  background-color: green !important;
+  color: blue;
   margin: 0;
   padding: 10px;
   text-align: center;
@@ -51,10 +51,10 @@ h1 {
   border: solid var(--accent-color);
   border-radius: 8px;
 }
-h4 {
-  font-size: 1em;
+h4,h1 {
+  font-size: 1.5em;
   color: var(--card-title-color);
-  background-color: var(--card-title-bg-color);
+  background-color: var(--card-title-bg-color) !important;
   margin: 4px;
   padding: 4px;
   border: solid var(--num-input-color) 3px;
@@ -68,3 +68,4 @@ h4 {
 
 
 }
+
