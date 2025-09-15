@@ -11,7 +11,7 @@
         { "path": "esp32/partitions.bin", "offset": 32768 },
         { "path": "esp32/boot_app0.bin", "offset": 57344 },
         { "path": "esp32/firefly.bin", "offset": 65536 },
-        { "path": "esp32/spiffs.bin", "offset": 3080192 }
+        { "path": "esp32/spiffs.bin", "offset": 3211264 }
       ]
     },
     {
