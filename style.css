@@ -1,0 +1,71 @@
+/* Default Theme */
+:root {
+  --main-bg-color: #0d2c0b; /* Black */
+  --card-bg-color: #625f5f; /* DimGray */
+  --button-color: #0b3980; /* Purple */
+  --button-color-hover: #8b008b; /* DarkMagenta */
+  --main-text-color: #ebe7e7; /* White */
+  --accent-color: #ff9800; /* Light Green */
+  --num-input-color: #ff4500; /* OrangeRed */
+  --card-title-color: #e7ff71;; /* Gold */
+  --card-title-bg-color: #21221d;; /* Gold */
+  --shadow-color: rgb(45, 81, 35); /* Light Pink Shadow */
+  --num-input-bg-color: #241b1b; /* Dark Gray */
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: green !important;
+  color: blue;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+#titleDiv {
+  display: flex;
+  flex-flow: column;
+}
+#top_left{
+  display: contents;
+    text-align: right;
+}
+#logo {
+  width: 10%;
+  min-width: 100px;
+  height: auto;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+h1, h3 {
+  color: var(--accent-color);
+  font-size: 1.5em;
+  display:flex;
+  align-self: center;
+  justify-content: center;
+  padding: 7px;
+}
+h1 {
+  border: solid var(--accent-color);
+  border-radius: 8px;
+}
+h4,h1 {
+  font-size: 1.5em;
+  color: var(--card-title-color) !important;
+  background-color: var(--card-title-bg-color) !important;
+  margin: 4px;
+  padding: 4px;
+  border: solid var(--num-input-color) 3px;
+  border-radius: 8px;
+  display: block; /* Ensure it behaves like a block element */
+  width: 70%; /* Make it span the full width of the container */
+  text-align: center; /* Optional: Center the text */
+  align-self: center;
+
+}
+
+
+}
+
