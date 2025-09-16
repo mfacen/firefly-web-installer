@@ -1,0 +1,212 @@
+<h1 id="firefly-interpreter-documentation">Firefly Interpreter Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The Firefly Interpreter is a powerful scripting engine that allows you to create dynamic automation programs using your GUI panels. You can reference panel values, create custom variables, control actuators, and manage program execution flow.</p>
+<h2 id="basic-syntax">Basic Syntax</h2>
+<h3 id="variables-and-assignments">Variables and Assignments</h3>
+<pre><code class="lang-javascript">// Reference panel values (panels act as variables)
+<span class="hljs-attribute">PumpStatus</span> = WaterPump<span class="hljs-comment">;</span>
+if TempSensor &gt; <span class="hljs-number">30</span> HeatingElement = <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+</code></pre>
+<h3 id="operators">Operators</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Arithmetic</span>
+Result = <span class="hljs-number">10</span> + <span class="hljs-number">5</span>;        <span class="hljs-comment">// Addition</span>
+Result = <span class="hljs-number">10</span> - <span class="hljs-number">3</span>;        <span class="hljs-comment">// Subtraction  </span>
+Result = <span class="hljs-number">4</span> * <span class="hljs-number">6</span>;         <span class="hljs-comment">// Multiplication</span>
+Result = <span class="hljs-number">20</span> / <span class="hljs-number">4</span>;        <span class="hljs-comment">// Division</span>
+
+<span class="hljs-comment">// Comparison</span>
+Temperature &gt; <span class="hljs-number">25</span>        <span class="hljs-comment">// Greater than</span>
+Humidity &lt; <span class="hljs-number">60</span>          <span class="hljs-comment">// Less than</span>
+Level == <span class="hljs-number">100</span>           <span class="hljs-comment">// Equal to (also can use 'is')</span>
+Pressure is <span class="hljs-number">14.7</span>       <span class="hljs-comment">// Alternative equality</span>
+
+<span class="hljs-comment">// Logical</span>
+Pump &amp; Valve           <span class="hljs-comment">// AND operation</span>
+Day | Night            <span class="hljs-comment">// OR operation</span>
+!EmergencyStop         <span class="hljs-comment">// NOT operation</span>
+</code></pre>
+<h2 id="panel-integration">Panel Integration</h2>
+<h3 id="using-panels-as-variables">Using Panels as Variables</h3>
+<p>Your GUI panels automatically become variables that can be read and modified:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Read panel values</span>
+CurrentTemp = TemperatureSensor;
+WaterLevel = LevelGauge;
+
+<span class="hljs-comment">// Control actuators through panels</span>
+HeatingElement = <span class="hljs-number">1</span>;     <span class="hljs-comment">// Turn on heating</span>
+WaterPump = <span class="hljs-number">0</span>;          <span class="hljs-comment">// Turn off pump</span>
+FanSpeed = <span class="hljs-number">75</span>;          <span class="hljs-comment">// Set fan to 75%</span>
+
+<span class="hljs-comment">// Use timer panels</span>
+Timer1 = <span class="hljs-number">300</span>;           <span class="hljs-comment">// Set timer to 5 minutes (300 seconds)</span>
+if Timer1 == <span class="hljs-number">0</span> PumpProgram = <span class="hljs-number">0</span>;  <span class="hljs-comment">// Stop program when timer expires</span>
+</code></pre>
+<h3 id="output-panel-control">Output Panel Control</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Control digital outputs</span>
+Output1 = <span class="hljs-number">1</span>;            <span class="hljs-comment">// Turn on output 1</span>
+Output2 = <span class="hljs-number">0</span>;            <span class="hljs-comment">// Turn off output 2</span>
+
+<span class="hljs-comment">// Control PWM outputs  </span>
+PWMOutput1 = <span class="hljs-number">128</span>;       <span class="hljs-comment">// 50% duty cycle (0-255 range)</span>
+LEDStrip = <span class="hljs-number">200</span>;         <span class="hljs-comment">// Bright LED setting</span>
+</code></pre>
+<h2 id="custom-variables">Custom Variables</h2>
+<p>Create your own global variables with the web app to use in program logic:</p>
+<pre><code class="lang-javascript">// Use in calculations
+<span class="hljs-attribute">TempDiff</span> = CurrentTemp - LastTemp<span class="hljs-comment">;</span>
+<span class="hljs-attribute">LastTemp</span> = CurrentTemp<span class="hljs-comment">;</span>
+
+// State tracking
+if WaterLow PumpState = <span class="hljs-number">1</span><span class="hljs-comment">;</span>
+</code></pre>
+<h2 id="program-control">Program Control</h2>
+<h3 id="one-shot-programs">One-Shot Programs</h3>
+<p>Programs that run once and shut themselves off:</p>
+<pre><code class="lang-javascript">// Pump priming <span class="hljs-function"><span class="hljs-keyword">program</span></span> <span class="hljs-keyword">named</span> PrimingProgram
+<span class="hljs-keyword">if</span> StartPriming WaterPump = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> StartPriming <span class="hljs-keyword">pause</span> <span class="hljs-number">5</span>;
+<span class="hljs-keyword">if</span> StartPriming WaterPump = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> StartPriming PrimingProgram = <span class="hljs-number">0</span>;
+
+// Toggle on Infrared Remote <span class="hljs-function"><span class="hljs-keyword">program</span></span> <span class="hljs-keyword">named</span> IR_toggle
+<span class="hljs-keyword">if</span> IR == <span class="hljs-number">13</span> D3 = <span class="hljs-comment">!D3;</span>
+<span class="hljs-keyword">if</span> IR == <span class="hljs-number">13</span> IR_toggle = <span class="hljs-number">0</span>;
+</code></pre>
+<h3 id="program-interaction">Program Interaction</h3>
+<p>Programs can control other programs:</p>
+<pre><code class="lang-javascript">// Master control program
+<span class="hljs-keyword">if</span> SystemStart <span class="hljs-attr">HeatingProgram</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> SystemStart <span class="hljs-attr">PumpProgram</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> SystemStart <span class="hljs-attr">MonitoringProgram</span> = <span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">if</span> SystemStop <span class="hljs-attr">HeatingProgram</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> SystemStop <span class="hljs-attr">PumpProgram</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> SystemStop <span class="hljs-attr">MonitoringProgram</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> SystemStop <span class="hljs-attr">MasterControl</span> = <span class="hljs-number">0</span>;
+
+// Conditional program starting
+<span class="hljs-keyword">if</span> Temperature &lt; <span class="hljs-number">20</span> <span class="hljs-attr">HeatingProgram</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> Temperature &gt; <span class="hljs-number">30</span> <span class="hljs-attr">HeatingProgram</span> = <span class="hljs-number">0</span>;
+</code></pre>
+<h2 id="practical-examples">Practical Examples</h2>
+<h3 id="1-temperature-control-system">1. Temperature Control System</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// HeatingProgram</span>
+if Temperature &lt; SetPoint - <span class="hljs-number">2</span> Heater = <span class="hljs-number">1</span>;
+if Temperature &lt; SetPoint - <span class="hljs-number">2</span> HeaterStatus = <span class="hljs-number">1</span>;
+
+if Temperature &gt; SetPoint + <span class="hljs-number">1</span> Heater = <span class="hljs-number">0</span>;
+if Temperature &gt; SetPoint + <span class="hljs-number">1</span> HeaterStatus = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// Display current status</span>
+HeaterDisplay = HeaterStatus;
+</code></pre>
+<h3 id="2-water-level-management">2. Water Level Management</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// WaterLevelProgram  </span>
+if WaterLevel &lt; <span class="hljs-number">20</span> FillPump = <span class="hljs-number">1</span>;
+if WaterLevel &lt; <span class="hljs-number">20</span> LowWaterAlarm = <span class="hljs-number">1</span>;
+
+if WaterLevel &gt; <span class="hljs-number">80</span> FillPump = <span class="hljs-number">0</span>;
+if WaterLevel &gt; <span class="hljs-number">80</span> LowWaterAlarm = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// Emergency overflow protection</span>
+if WaterLevel &gt; <span class="hljs-number">95</span> FillPump = <span class="hljs-number">0</span>;
+if WaterLevel &gt; <span class="hljs-number">95</span> DrainValve = <span class="hljs-number">1</span>;
+if WaterLevel &gt; <span class="hljs-number">95</span> OverflowAlarm = <span class="hljs-number">1</span>;
+</code></pre>
+<h3 id="3-timer-based-operations">3. Timer-Based Operations</h3>
+<p>   Programs can turn on Timer panels:</p>
+<pre><code class="lang-javascript">// CycleProgram
+<span class="hljs-keyword">if</span> StartCycle <span class="hljs-attr">Timer1</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> StartCycle <span class="hljs-attr">Pump</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> StartCycle <span class="hljs-attr">StartCycle</span> = <span class="hljs-number">0</span>;
+
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Timer1</span> == <span class="hljs-number">0</span> &amp; <span class="hljs-attr">Pump</span> == <span class="hljs-number">1</span> <span class="hljs-attr">Pump</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Timer1</span> == <span class="hljs-number">0</span> &amp; <span class="hljs-attr">Pump</span> == <span class="hljs-number">1</span> <span class="hljs-attr">Timer2</span> = <span class="hljs-number">30</span>;
+
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Timer2</span> == <span class="hljs-number">0</span> <span class="hljs-attr">CycleProgram</span> = <span class="hljs-number">0</span>;
+</code></pre>
+<h3 id="4-multi-stage-process-control">4. Multi-Stage Process Control</h3>
+<pre><code class="lang-javascript">// ProcessControl
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">1</span> <span class="hljs-attr">Valve1</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">1</span> &amp; FlowSensor &gt; <span class="hljs-number">50</span> <span class="hljs-attr">Stage</span> = <span class="hljs-number">2</span>;
+
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">2</span> <span class="hljs-attr">Valve1</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">2</span> <span class="hljs-attr">Heater</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">2</span> &amp; Temperature &gt; TargetTemp <span class="hljs-attr">Stage</span> = <span class="hljs-number">3</span>;
+
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">3</span> <span class="hljs-attr">Heater</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">3</span> <span class="hljs-attr">Mixer</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">3</span> <span class="hljs-attr">Timer1</span> = <span class="hljs-number">120</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">3</span> &amp; <span class="hljs-attr">Timer1</span> == <span class="hljs-number">0</span> <span class="hljs-attr">Stage</span> = <span class="hljs-number">4</span>;
+
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">4</span> <span class="hljs-attr">Mixer</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">4</span> <span class="hljs-attr">ProcessComplete</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">Stage</span> == <span class="hljs-number">4</span> <span class="hljs-attr">ProcessControl</span> = <span class="hljs-number">0</span>;
+</code></pre>
+<h3 id="5-safety-monitoring">5. Safety Monitoring</h3>
+<pre><code class="lang-javascript">// SafetyMonitor
+<span class="hljs-keyword">if</span> Temperature &gt; MaxTemp | Pressure &gt; MaxPressure <span class="hljs-attr">EmergencyStop</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> Temperature &gt; MaxTemp | Pressure &gt; MaxPressure <span class="hljs-attr">AllPrograms</span> = <span class="hljs-number">0</span>;
+
+<span class="hljs-keyword">if</span> EmergencyStop <span class="hljs-attr">Heater</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> EmergencyStop <span class="hljs-attr">Pump</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> EmergencyStop <span class="hljs-attr">AllValves</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> EmergencyStop <span class="hljs-attr">AlarmBuzzer</span> = <span class="hljs-number">1</span>;
+
+// Reset capability
+<span class="hljs-keyword">if</span> ResetButton &amp; !EmergencyStop <span class="hljs-attr">AlarmBuzzer</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> ResetButton &amp; !EmergencyStop <span class="hljs-attr">SafetyMonitor</span> = <span class="hljs-number">0</span>;
+</code></pre>
+<h3 id="6-data-logging-and-monitoring">6. Data Logging and Monitoring</h3>
+<pre><code class="lang-javascript">// DataLogger
+<span class="hljs-attr">LogCounter</span> = LogCounter + <span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">if</span> LogCounter &gt;= <span class="hljs-number">60</span> <span class="hljs-attr">LoggedTemp</span> = Temperature;
+<span class="hljs-keyword">if</span> LogCounter &gt;= <span class="hljs-number">60</span> <span class="hljs-attr">LoggedPressure</span> = Pressure;
+<span class="hljs-keyword">if</span> LogCounter &gt;= <span class="hljs-number">60</span> <span class="hljs-attr">LoggedFlow</span> = FlowSensor;
+<span class="hljs-keyword">if</span> LogCounter &gt;= <span class="hljs-number">60</span> <span class="hljs-attr">LogCounter</span> = <span class="hljs-number">0</span>;
+
+// Could trigger data transmission
+<span class="hljs-keyword">if</span> LoggedTemp &gt; <span class="hljs-number">50</span> <span class="hljs-attr">HighTempFlag</span> = <span class="hljs-number">1</span>;
+</code></pre>
+<h2 id="advanced-features">Advanced Features</h2>
+<h3 id="conditional-logic">Conditional Logic</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Multiple conditions</span>
+if Temperature &gt; <span class="hljs-number">25</span> &amp; Humidity &lt; <span class="hljs-number">40</span> Humidifier = <span class="hljs-number">1</span>;
+if Temperature &gt; <span class="hljs-number">25</span> &amp; Humidity &lt; <span class="hljs-number">40</span> Fan = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// Nested conditions using multiple if statements</span>
+if SystemEnabled TempCheck = <span class="hljs-number">1</span>;
+if TempCheck &amp; Temperature &lt; <span class="hljs-number">20</span> Heater = <span class="hljs-number">1</span>;
+if TempCheck &amp; Temperature &gt; <span class="hljs-number">30</span> Heater = <span class="hljs-number">0</span>;
+</code></pre>
+<h3 id="pause-functionality">Pause Functionality</h3>
+<pre><code class="lang-javascript">// Timed sequences (each statement executes in order)
+<span class="hljs-attribute">Valve1</span> = <span class="hljs-number">1</span><span class="hljs-comment">;</span>
+pause <span class="hljs-number">5</span><span class="hljs-comment">;        // Wait 5 seconds</span>
+<span class="hljs-attribute">Valve1</span> = <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+<span class="hljs-attribute">Valve2</span> = <span class="hljs-number">1</span><span class="hljs-comment">;</span>
+pause <span class="hljs-number">10</span><span class="hljs-comment">;       // Wait 10 seconds  </span>
+<span class="hljs-attribute">Valve2</span> = <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+<span class="hljs-attribute">SequenceProgram</span> = <span class="hljs-number">0</span><span class="hljs-comment">; // End program</span>
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use descriptive variable names</strong>: <code>WaterPump</code> instead of <code>P1</code></li>
+<li><strong>Self-disable one-shot programs</strong>: Always end with <code>ProgramName = 0;</code></li>
+<li><strong>Include safety checks</strong>: Monitor for error conditions</li>
+<li><strong>Use timers for sequences</strong>: Better than long pause statements</li>
+<li><strong>Document your logic</strong>: Use meaningful panel names</li>
+</ol>
+<h2 id="error-handling">Error Handling</h2>
+<p>The interpreter will provide error messages for:</p>
+<ul>
+<li>Undefined variables</li>
+<li>Invalid number formats  </li>
+<li>Division by zero</li>
+<li>Missing operands</li>
+<li>Unknown operators</li>
+</ul>
+<p>Check the error output to debug your programs!</p>
+<hr>
+<p><em>This interpreter integrates seamlessly with your Firefly GUI panels, making automation programming intuitive and powerful.</em></p>
